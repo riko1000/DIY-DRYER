@@ -46,7 +46,7 @@ float DHTSensor::getHumidity() const
     return humidity;
 }
 
-bool DHTSensor::connected() const
+bool DHTSensor::isConnected() const
 {
     return sensorConnected;
 }

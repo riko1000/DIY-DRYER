@@ -46,7 +46,7 @@ float Thermistor::getTemperature() const
     return temperature;
 }
 
-bool Thermistor::connected() const
+bool Thermistor::isConnected() const
 {
     return sensorConnected;
 }

@@ -11,7 +11,7 @@ public:
 
     float getTemperature() const;
 
-    bool connected() const;
+    bool isConnected() const;
 
 private:
 
