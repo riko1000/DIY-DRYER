@@ -75,9 +75,36 @@ void Dryer::updateTimer()
 
 void Dryer::checkSafety()
 {
-    // TODO: Implement safety checks
-}
+    if (!thermistor.isConnected())
+    {
+        enterErrorState();
+        return;
+    }
 
+    if (!dht.isConnected())
+    {
+        enterErrorState();
+        return;
+    }
+
+    if (thermistor.getTemperature() >= settings.maxHeatbedTemperature)
+    {
+        enterErrorState();
+        return;
+    }
+
+    if (dht.getTemperature() >= settings.maxChamberTemperature)
+    {
+        enterErrorState();
+        return;
+    }
+}
+void Dryer::enterErrorState()
+{
+    runtime.running = false;
+    heater.off();
+    currentState = DryerState::Error;
+}
 float Dryer::getHeatbedTemperature() const
 {
     return thermistor.getTemperature();

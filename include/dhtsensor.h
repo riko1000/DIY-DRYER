@@ -10,7 +10,7 @@ public:
     float getTemperature() const;
     float getHumidity() const;
 
-    bool connected() const;
+    bool isConnected() const;
 
 private:
     float temperature = 0.0f;

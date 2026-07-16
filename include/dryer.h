@@ -33,7 +33,7 @@ public:
 
 private:
     
-
+    void enterErrorState();
     void controlHeater();
     void updateTimer();
     void checkSafety();
