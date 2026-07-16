@@ -4,19 +4,21 @@
 #include "heater.h"
 #include "thermistor.h"
 #include "dhtsensor.h"
-
-enum class DryerState
-{
-    Booting,
-    Idle,
-    Heating,
-    Finished,
-    Error
-};
+#include "dryer_types.h"
 
 class Dryer
 {
 public:
+        void start();
+    void stop();
+
+    bool isRunning() const;
+
+    void setTargetTemperature(float temperature);
+    float getTargetTemperature() const;
+
+
+
     Dryer() = default;
 
     void begin();
@@ -30,10 +32,18 @@ public:
     DryerState state() const;
 
 private:
+    
+
+    void controlHeater();
+    void updateTimer();
+    void checkSafety();
 
     Thermistor thermistor;
     Heater heater;
     DHTSensor dht;
+
+    DryerSettings settings;
+    DryerRuntime runtime;
 
     DryerState currentState = DryerState::Booting;
 };
