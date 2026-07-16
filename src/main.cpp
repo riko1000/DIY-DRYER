@@ -1,20 +1,17 @@
 #include <Arduino.h>
 
 #include "config.h"
-#include "thermistor.h"
-#include "heater.h"
+#include "dryer.h"
 
-Thermistor heatbed;
-Heater heater;
+Dryer dryer;
+
 void setup()
 {
     Serial.begin(115200);
 
     analogReadResolution(14);
 
-    heater.begin();
-    
-    heatbed.begin();
+    dryer.begin();
 
     Serial.println();
     Serial.println("DIY Dryer Booting");
@@ -22,18 +19,11 @@ void setup()
 
 void loop()
 {
-    heatbed.update();
+    dryer.update();
 
     Serial.print("Heatbed: ");
-
-    Serial.print(heatbed.getTemperature());
-
-    Serial.print(" C");
-
-    if (!heatbed.connected())
-        Serial.print("  (Sensor Missing)");
-
-    Serial.println();
+    Serial.print(dryer.getHeatbedTemperature());
+    Serial.println(" C");
 
     delay(1000);
 }
