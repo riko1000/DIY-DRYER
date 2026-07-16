@@ -17,7 +17,8 @@ public:
     void setTargetTemperature(float temperature);
     float getTargetTemperature() const;
 
-
+    uint32_t getRemainingSeconds() const;
+    uint8_t getProgress() const;
 
     Dryer() = default;
 
@@ -30,7 +31,7 @@ public:
     bool heaterIsOn() const;
 
     DryerState state() const;
-
+    DryerStatus getStatus() const;
 private:
     
     void enterErrorState();

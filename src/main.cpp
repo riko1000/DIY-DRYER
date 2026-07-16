@@ -2,8 +2,10 @@
 
 #include "config.h"
 #include "dryer.h"
+#include "webserver.h"
 
 Dryer dryer;
+WebServer webServer(dryer);
 
 void setup()
 {
@@ -12,9 +14,12 @@ void setup()
     analogReadResolution(14);
 
     dryer.begin();
-    
+
+    // Temporary for testing.
     dryer.start();
-    
+
+    webServer.begin();
+
     Serial.println();
     Serial.println("DIY Dryer Booting");
 }
@@ -23,17 +28,5 @@ void loop()
 {
     dryer.update();
 
-    Serial.print("Heatbed: ");
-    Serial.print(dryer.getHeatbedTemperature());
-    Serial.println(" C");
-
-    Serial.print("Chamber: ");
-    Serial.print(dryer.getChamberTemperature());
-    Serial.println(" C");
-
-    Serial.print("Humidity: ");
-    Serial.print(dryer.getHumidity());
-    Serial.println(" %");
-
-    delay(1000);
+    webServer.update();
 }

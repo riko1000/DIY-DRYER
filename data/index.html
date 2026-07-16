@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DIY Dryer</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>DIY Dryer</h1>
+
+        <div id="statusBadge" class="status idle">
+            ● IDLE
+        </div>
+
+    </header>
+
+    <section class="cards">
+
+        <div class="card">
+
+            <h2>🌡 Chamber</h2>
+
+            <p id="chamberTemp">--.- °C</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🔥 Heatbed</h2>
+
+            <p id="heatbedTemp">--.- °C</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>💧 Humidity</h2>
+
+            <p id="humidity">-- %</p>
+
+        </div>
+
+    </section>
+
+    <section class="progressSection">
+
+        <h2>Progress</h2>
+
+        <progress id="progressBar" value="0" max="100"></progress>
+
+        <p id="remainingTime">
+            --:--:--
+        </p>
+
+    </section>
+
+    <section class="controls">
+
+        <button id="startButton">
+            ▶ Start
+        </button>
+
+        <button id="stopButton">
+            ■ Stop
+        </button>
+
+    </section>
+
+    <section class="materials">
+
+        <h2>Material Presets</h2>
+
+        <div class="presetGrid">
+
+            <button>PLA</button>
+            <button>PETG</button>
+            <button>ABS</button>
+            <button>ASA</button>
+            <button>TPU</button>
+            <button>PA</button>
+            <button>PC</button>
+            <button>Custom</button>
+
+        </div>
+
+    </section>
+
+    <section class="temperature">
+
+        <h2>Target Temperature</h2>
+
+        <input
+            id="targetTemp"
+            type="range"
+            min="30"
+            max="80"
+            value="45">
+
+        <p>
+
+            <span id="targetValue">
+
+                45
+
+            </span>
+
+            °C
+
+        </p>
+
+    </section>
+
+    <section class="graph">
+
+        <h2>Temperature Graph</h2>
+
+        <canvas
+            id="graph"
+            width="600"
+            height="250">
+        </canvas>
+
+    </section>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
