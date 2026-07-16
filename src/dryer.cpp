@@ -167,3 +167,25 @@ uint8_t Dryer::getProgress() const
 {
     return runtime.progress;
 }
+
+
+DryerStatus Dryer::getStatus() const
+{
+    DryerStatus status;
+
+    status.chamberTemperature = dht.getTemperature();
+    status.heatbedTemperature = thermistor.getTemperature();
+    status.humidity = dht.getHumidity();
+
+    status.targetTemperature = settings.targetTemperature;
+
+    status.heaterOn = heater.isOn();
+    status.running = runtime.running;
+
+    status.state = currentState;
+
+    status.remainingSeconds = runtime.remainingSeconds;
+    status.progress = runtime.progress;
+
+    return status;
+}

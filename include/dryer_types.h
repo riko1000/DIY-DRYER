@@ -37,4 +37,21 @@ struct DryerRuntime
     uint8_t progress = 0;
 };
 
+struct DryerStatus
+{
+    float chamberTemperature = 0.0f;
+    float heatbedTemperature = 0.0f;
+    float humidity = 0.0f;
+
+    float targetTemperature = 45.0f;
+
+    bool heaterOn = false;
+    bool running = false;
+
+    DryerState state = DryerState::Idle;
+
+    uint32_t remainingSeconds = 0;
+
+    uint8_t progress = 0;
+};
 #endif

@@ -31,7 +31,7 @@ public:
     bool heaterIsOn() const;
 
     DryerState state() const;
-
+    DryerStatus getStatus() const;
 private:
     
     void enterErrorState();
