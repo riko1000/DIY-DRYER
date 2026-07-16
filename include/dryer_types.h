@@ -7,7 +7,6 @@ enum class DryerState
 {
     Booting,
     Idle,
-    Heating,
     Drying,
     Finished,
     Error
