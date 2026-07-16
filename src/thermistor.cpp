@@ -6,30 +6,47 @@
 
 void Thermistor::begin()
 {
-    // Nothing to initialize yet.
 }
 
-float Thermistor::readTemperature()
+void Thermistor::update()
 {
-    // Read the ADC (0–16383 because we set 14-bit resolution)
+    if (millis() - lastRead < 200)
+        return;
+
+    lastRead = millis();
+
     uint16_t adc = analogRead(THERMISTOR_PIN);
 
-    // Prevent divide-by-zero
     if (adc == 0 || adc >= 16383)
-        return -999.0f;
+    {
+        sensorConnected = false;
+        return;
+    }
 
-    // Calculate thermistor resistance
-    float resistance = SERIES_RESISTOR / ((16383.0f / adc) - 1.0f);
+    sensorConnected = true;
 
-    // Beta equation
-    float temperature;
+    float resistance =
+        SERIES_RESISTOR /
+        ((16383.0f / adc) - 1.0f);
 
-    temperature = resistance / THERMISTOR_NOMINAL;
-    temperature = log(temperature);
-    temperature /= BETA_COEFFICIENT;
-    temperature += 1.0f / (TEMPERATURE_NOMINAL + 273.15f);
-    temperature = 1.0f / temperature;
-    temperature -= 273.15f;
+    float t;
 
+    t = resistance / THERMISTOR_NOMINAL;
+    t = log(t);
+    t /= BETA_COEFFICIENT;
+    t += 1.0f / (TEMPERATURE_NOMINAL + 273.15f);
+    t = 1.0f / t;
+    t -= 273.15f;
+
+    temperature = t;
+}
+
+float Thermistor::getTemperature() const
+{
     return temperature;
+}
+
+bool Thermistor::connected() const
+{
+    return sensorConnected;
 }

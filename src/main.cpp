@@ -2,31 +2,38 @@
 
 #include "config.h"
 #include "thermistor.h"
+#include "heater.h"
 
 Thermistor heatbed;
-
+Heater heater;
 void setup()
 {
     Serial.begin(115200);
 
     analogReadResolution(14);
 
-    pinMode(RELAY_PIN, OUTPUT);
-    digitalWrite(RELAY_PIN, LOW);
-
+    heater.begin();
+    
     heatbed.begin();
 
     Serial.println();
-    Serial.println("========================");
     Serial.println("DIY Dryer Booting");
-    Serial.println("========================");
 }
 
 void loop()
 {
+    heatbed.update();
+
     Serial.print("Heatbed: ");
-    Serial.print(heatbed.readTemperature());
-    Serial.println(" °C");
+
+    Serial.print(heatbed.getTemperature());
+
+    Serial.print(" C");
+
+    if (!heatbed.connected())
+        Serial.print("  (Sensor Missing)");
+
+    Serial.println();
 
     delay(1000);
 }

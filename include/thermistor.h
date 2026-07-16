@@ -4,8 +4,22 @@
 class Thermistor
 {
 public:
+
     void begin();
-    float readTemperature();
+
+    void update();
+
+    float getTemperature() const;
+
+    bool connected() const;
+
+private:
+
+    float temperature = 0.0f;
+
+    bool sensorConnected = false;
+
+    unsigned long lastRead = 0;
 };
 
 #endif
