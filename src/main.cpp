@@ -1,9 +1,11 @@
 #include <Arduino.h>
 
 #include "config.h"
-#include "app.h"
+#include "dryer.h"
+#include "webserver.h"
 
-App app;
+Dryer dryer;
+WebServer webServer(dryer);
 
 void setup()
 {
@@ -11,7 +13,12 @@ void setup()
 
     analogReadResolution(14);
 
-    app.begin();
+    dryer.begin();
+
+    // Temporary for testing.
+    dryer.start();
+
+    webServer.begin();
 
     Serial.println();
     Serial.println("DIY Dryer Booting");
@@ -19,5 +26,7 @@ void setup()
 
 void loop()
 {
-    app.update();
+    dryer.update();
+
+    webServer.update();
 }

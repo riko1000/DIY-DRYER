@@ -12,7 +12,13 @@ void Dryer::begin()
 void Dryer::start()
 {
     runtime.running = true;
+
     runtime.startTime = millis();
+
+    runtime.elapsedSeconds = 0;
+    runtime.remainingSeconds = settings.dryingTimeSeconds;
+    runtime.progress = 0;
+
     currentState = DryerState::Drying;
 }
 
@@ -70,7 +76,31 @@ void Dryer::controlHeater()
 
 void Dryer::updateTimer()
 {
-    // TODO: Implement drying timer
+    if (!runtime.running)
+        return;
+
+    runtime.elapsedSeconds =
+        (millis() - runtime.startTime) / 1000;
+
+    if (runtime.elapsedSeconds >= settings.dryingTimeSeconds)
+    {
+        runtime.remainingSeconds = 0;
+        runtime.progress = 100;
+
+        stop();
+
+        currentState = DryerState::Finished;
+
+        return;
+    }
+
+    runtime.remainingSeconds =
+        settings.dryingTimeSeconds -
+        runtime.elapsedSeconds;
+
+    runtime.progress =
+        (runtime.elapsedSeconds * 100) /
+        settings.dryingTimeSeconds;
 }
 
 void Dryer::checkSafety()
@@ -128,4 +158,12 @@ bool Dryer::heaterIsOn() const
 DryerState Dryer::state() const
 {
     return currentState;
+}
+uint32_t Dryer::getRemainingSeconds() const
+{
+    return runtime.remainingSeconds;
+}
+uint8_t Dryer::getProgress() const
+{
+    return runtime.progress;
 }

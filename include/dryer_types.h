@@ -26,15 +26,15 @@ struct DryerSettings
 
 struct DryerRuntime
 {
-    bool heaterEnabled = false;
-
     bool running = false;
+    bool heaterEnabled = false;
 
     unsigned long startTime = 0;
 
-    unsigned long elapsedSeconds = 0;
+    uint32_t elapsedSeconds = 0;
+    uint32_t remainingSeconds = 0;
 
-    unsigned long remainingSeconds = 0;
+    uint8_t progress = 0;
 };
 
 #endif
