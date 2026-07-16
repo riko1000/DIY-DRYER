@@ -23,7 +23,7 @@ void loop()
 
     Serial.print("Heatbed: ");
     Serial.print(dryer.getHeatbedTemperature());
-    Serial.println(" C");
+    
 
     delay(1000);
 }

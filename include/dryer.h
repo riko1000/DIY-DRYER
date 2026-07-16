@@ -3,6 +3,7 @@
 
 #include "heater.h"
 #include "thermistor.h"
+#include "dhtsensor.h"
 
 enum class DryerState
 {
@@ -22,7 +23,8 @@ public:
     void update();
 
     float getHeatbedTemperature() const;
-
+    float getChamberTemperature() const;
+    float getHumidity() const;
     bool heaterIsOn() const;
 
     DryerState state() const;
@@ -31,6 +33,7 @@ private:
 
     Thermistor thermistor;
     Heater heater;
+    DHTSensor dht;
 
     DryerState currentState = DryerState::Booting;
 };
