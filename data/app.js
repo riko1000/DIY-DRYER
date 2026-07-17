@@ -16,14 +16,16 @@ const stopButton = document.getElementById("stopButton");
 const timeSlider = document.getElementById("timeSlider");
 const timeValue = document.getElementById("timeValue");
 
-timeSlider.addEventListener("input", () =>
+timeSlider.addEventListener("change", async () =>
 {
     timeValue.textContent = timeSlider.value;
+    await sendSettings();
 });
 
-targetSlider.addEventListener("input", () =>
+targetSlider.addEventListener("change", async () =>
 {
     targetValue.textContent = targetSlider.value;
+    await sendSettings();
 });
 
 startButton.addEventListener("click", async () =>

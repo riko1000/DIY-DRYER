@@ -66,7 +66,7 @@ void WebServer::handleClient(WiFiClient& client)
 
     if (request.startsWith("POST /api/settings"))
     {
-        sendSettings(client);
+        sendSettings(client, request);
         return;
     }
     sendNotFound(client);
@@ -86,8 +86,38 @@ String WebServer::readRequest(WiFiClient& client)
 
             request += c;
 
+            timeout = millis();
+
             if (request.endsWith("\r\n\r\n"))
+            {
+                int contentLength = 0;
+
+                int index = request.indexOf("Content-Length:");
+
+                if (index != -1)
+                {
+                    int end = request.indexOf("\r\n", index);
+
+                    String value = request.substring(index + 15, end);
+
+                    value.trim();
+
+                    contentLength = value.toInt();
+                }
+
+                while (contentLength > 0)
+                {
+                    if (client.available())
+                    {
+                        request += (char)client.read();
+                        contentLength--;
+
+                        timeout = millis();
+                    }
+                }
+
                 return request;
+            }
         }
     }
 
@@ -133,8 +163,18 @@ void WebServer::sendStop(WiFiClient&)
 {
 }
 
-void WebServer::sendSettings(WiFiClient& client)
+void WebServer::sendSettings(WiFiClient& client, const String& request)
 {
+int bodyStart = request.indexOf("\r\n\r\n");
+
+if (bodyStart == -1)
+{
+    sendText(client, "Bad Request");
+    return;
+}
+
+String body = request.substring(bodyStart + 4);
+
     Serial.println("Settings received");
 
     sendText(client, "OK");

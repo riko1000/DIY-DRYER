@@ -26,7 +26,7 @@ private:
 
     void sendStart(WiFiClient& client);
     void sendStop(WiFiClient& client);
-    void sendSettings(WiFiClient& client);
+    void sendSettings(WiFiClient& client, const String& request);
 
     void sendNotFound(WiFiClient& client);
 
