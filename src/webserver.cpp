@@ -64,6 +64,11 @@ void WebServer::handleClient(WiFiClient& client)
         return;
     }
 
+    if (request.startsWith("POST /api/settings"))
+    {
+        sendSettings(client);
+        return;
+    }
     sendNotFound(client);
 }
 
@@ -128,8 +133,11 @@ void WebServer::sendStop(WiFiClient&)
 {
 }
 
-void WebServer::sendSettings(WiFiClient&)
+void WebServer::sendSettings(WiFiClient& client)
 {
+    Serial.println("Settings received");
+
+    sendText(client, "OK");
 }
 
 void WebServer::sendNotFound(WiFiClient& client)

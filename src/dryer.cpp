@@ -39,6 +39,11 @@ void Dryer::setTargetTemperature(float temperature)
     settings.targetTemperature = temperature;
 }
 
+void Dryer::setDryTimeHours(uint32_t hours)
+{
+    settings.dryingTimeSeconds = hours * 3600;
+}
+
 float Dryer::getTargetTemperature() const
 {
     return settings.targetTemperature;

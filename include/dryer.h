@@ -15,6 +15,7 @@ public:
     bool isRunning() const;
 
     void setTargetTemperature(float temperature);
+    void setDryTimeHours(uint32_t hours);
     float getTargetTemperature() const;
 
     uint32_t getRemainingSeconds() const;

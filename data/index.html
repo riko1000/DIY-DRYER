@@ -97,30 +97,34 @@
 
     </section>
 
-    <section class="temperature">
+       
+    <section class="settings">
 
-        <h2>Target Temperature</h2>
+    <h2>⚙ Drying Settings</h2>
 
-        <input
-            id="targetTemp"
-            type="range"
-            min="30"
-            max="80"
-            value="45">
+    <h3>Temperature</h3>
 
-        <p>
+    <input
+        id="targetTemp"
+        type="range"
+        min="30"
+        max="80"
+        value="45">
 
-            <span id="targetValue">
+    <p><span id="targetValue">45</span> °C</p>
 
-                45
+    <h3>Dry Time</h3>
 
-            </span>
+    <input
+        id="timeSlider"
+        type="range"
+        min="1"
+        max="24"
+        value="6">
 
-            °C
+    <p><span id="timeValue">6</span> Hours</p>
 
-        </p>
-
-    </section>
+</section>
 
     <section class="graph">
 
