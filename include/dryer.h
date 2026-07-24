@@ -33,7 +33,11 @@ public:
 
     DryerState state() const;
     DryerStatus getStatus() const;
-private:
+
+    const char* getStateString() const;
+
+
+    private:
     
     void enterErrorState();
     void controlHeater();

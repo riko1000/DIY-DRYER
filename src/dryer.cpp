@@ -67,7 +67,7 @@ void Dryer::controlHeater()
         return;
     }
 
-    float chamberTemp = dht.getTemperature();
+    float chamberTemp = thermistor.getTemperature();
 
     if (chamberTemp <= settings.targetTemperature - settings.hysteresis)
     {
@@ -116,11 +116,11 @@ void Dryer::checkSafety()
         return;
     }
 
-    if (!dht.isConnected())
-    {
-        enterErrorState();
-        return;
-    }
+   // if (!dht.isConnected())
+    //{
+      //  enterErrorState();
+        //return;
+    //}
 
     if (thermistor.getTemperature() >= settings.maxHeatbedTemperature)
     {
@@ -193,4 +193,27 @@ DryerStatus Dryer::getStatus() const
     status.progress = runtime.progress;
 
     return status;
+}
+
+const char* Dryer::getStateString() const
+{
+    switch (currentState)
+    {
+    case DryerState::Booting:
+        return "Booting";
+
+    case DryerState::Idle:
+        return "Idle";
+
+    case DryerState::Drying:
+        return "Drying";
+
+    case DryerState::Finished:
+        return "Finished";
+
+    case DryerState::Error:
+        return "Error";
+    }
+
+    return "Unknown";
 }

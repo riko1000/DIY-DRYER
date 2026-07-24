@@ -44,7 +44,7 @@ constexpr float MAX_CHAMBER_TEMP = 60.0f;
 |--------------------------------------------------------------------------
 */
 
-constexpr char AP_SSID[] = "DIY-Dryer";
-constexpr char AP_PASSWORD[] = "filament123";
+constexpr char AP_SSID[] = "Dryer-4338";
+constexpr char AP_PASSWORD[] = "43384338";
 
 #endif
