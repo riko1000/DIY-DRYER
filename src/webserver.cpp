@@ -167,7 +167,7 @@ void WebServer::sendHomePage(WiFiClient& client)
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DIY Dryer</title>
+<title>4338 Dryer</title>
 
 <link rel="stylesheet" href="/style.css">
 
@@ -179,7 +179,7 @@ void WebServer::sendHomePage(WiFiClient& client)
 
     <header>
 
-        <h1>DIY Dryer</h1>
+        <h1>4338 Dryer</h1>
 
         <div id="statusBadge" class="status idle">
             ● IDLE
@@ -443,14 +443,18 @@ canvas {
 
 void WebServer::sendStatus(WiFiClient& client)
 {
-    JsonDocument json;
+    DynamicJsonDocument json(256);
+    const DryerStatus status = dryer.getStatus();
 
     json["state"] = dryer.getStateString();
-    json["heater"] = dryer.heaterIsOn();
-
-    json["heatbed"] = dryer.getHeatbedTemperature();
-    json["chamber"] = dryer.getChamberTemperature();
-    json["humidity"] = dryer.getHumidity();
+    json["heater"] = status.heaterOn;
+    json["running"] = status.running;
+    json["target"] = status.targetTemperature;
+    json["heatbed"] = status.heatbedTemperature;
+    json["chamber"] = status.chamberTemperature;
+    json["humidity"] = status.humidity;
+    json["progress"] = status.progress;
+    json["remaining"] = status.remainingSeconds;
 
     String body;
 
@@ -469,18 +473,36 @@ void WebServer::sendStop(WiFiClient&)
 
 void WebServer::sendSettings(WiFiClient& client, const String& request)
 {
-int bodyStart = request.indexOf("\r\n\r\n");
+    int bodyStart = request.indexOf("\r\n\r\n");
 
-if (bodyStart == -1)
-{
-    sendText(client, "Bad Request");
-    return;
-}
+    if (bodyStart == -1)
+    {
+        sendText(client, "Bad Request", 400);
+        return;
+    }
 
-String body = request.substring(bodyStart + 4);
+    String body = request.substring(bodyStart + 4);
+
+    DynamicJsonDocument json(256);
+    DeserializationError error = deserializeJson(json, body);
+
+    if (error)
+    {
+        sendText(client, "Bad Request", 400);
+        return;
+    }
+
+    if (json.containsKey("temperature"))
+    {
+        dryer.setTargetTemperature(json["temperature"].as<float>());
+    }
+
+    if (json.containsKey("hours"))
+    {
+        dryer.setDryTimeHours(json["hours"].as<uint32_t>());
+    }
 
     Serial.println("Settings received");
-
     sendText(client, "OK");
 }
 
