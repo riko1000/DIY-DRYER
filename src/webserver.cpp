@@ -454,7 +454,17 @@ void WebServer::sendStatus(WiFiClient& client)
     json["chamber"] = status.chamberTemperature;
     json["humidity"] = status.humidity;
     json["progress"] = status.progress;
-    json["remaining"] = status.remainingSeconds;
+
+    // format remaining seconds as H:MM:SS for the dashboard
+    uint32_t remSeconds = status.remainingSeconds;
+    uint32_t hours = remSeconds / 3600;
+    uint32_t minutes = (remSeconds % 3600) / 60;
+    uint32_t seconds = remSeconds % 60;
+
+    char remBuf[16];
+    snprintf(remBuf, sizeof(remBuf), "%u:%02u:%02u", (unsigned)hours, (unsigned)minutes, (unsigned)seconds);
+
+    json["remaining"] = remBuf;
 
     String body;
 

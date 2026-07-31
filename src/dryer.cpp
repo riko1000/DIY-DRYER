@@ -92,7 +92,10 @@ void Dryer::updateTimer()
         runtime.remainingSeconds = 0;
         runtime.progress = 100;
 
+        // ensure runtime is stopped and heater is definitely off when
+        // the drying cycle completes
         stop();
+        heater.off();
 
         currentState = DryerState::Finished;
 
