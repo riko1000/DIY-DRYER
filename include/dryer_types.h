@@ -26,7 +26,6 @@ struct DryerSettings
 struct DryerRuntime
 {
     bool running = false;
-    bool heaterEnabled = false;
 
     unsigned long startTime = 0;
 
@@ -41,11 +40,13 @@ struct DryerStatus
     float chamberTemperature = 0.0f;
     float heatbedTemperature = 0.0f;
     float humidity = 0.0f;
+    bool dhtConnected = false;
 
     float targetTemperature = 45.0f;
 
     bool heaterOn = false;
     bool running = false;
+    bool dhtConnected = false;
 
     DryerState state = DryerState::Idle;
 

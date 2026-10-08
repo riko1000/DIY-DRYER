@@ -67,13 +67,15 @@ void Dryer::controlHeater()
         return;
     }
 
-    float chamberTemp = thermistor.getTemperature();
+    // Prioritize Chamber (DHT) for regulation if available, 
+    // fallback to Heatbed (Thermistor) if DHT is disconnected.
+    float currentTemp = dht.isConnected() ? dht.getTemperature() : thermistor.getTemperature();
 
-    if (chamberTemp <= settings.targetTemperature - settings.hysteresis)
+    if (currentTemp <= settings.targetTemperature - settings.hysteresis)
     {
         heater.on();
     }
-    else if (chamberTemp >= settings.targetTemperature + settings.hysteresis)
+    else if (currentTemp >= settings.targetTemperature + settings.hysteresis)
     {
         heater.off();
     }
@@ -92,9 +94,7 @@ void Dryer::updateTimer()
         runtime.remainingSeconds = 0;
         runtime.progress = 100;
 
-        // ensure runtime is stopped and heater is definitely off when
-        // the drying cycle completes
-        stop();
+        runtime.running = false;
         heater.off();
 
         currentState = DryerState::Finished;
@@ -119,19 +119,14 @@ void Dryer::checkSafety()
         return;
     }
 
-   // if (!dht.isConnected())
-    //{
-      //  enterErrorState();
-        //return;
-    //}
-
     if (thermistor.getTemperature() >= settings.maxHeatbedTemperature)
     {
         enterErrorState();
         return;
     }
 
-    if (dht.getTemperature() >= settings.maxChamberTemperature)
+    if (dht.isConnected() &&
+        dht.getTemperature() >= settings.maxChamberTemperature)
     {
         enterErrorState();
         return;
@@ -184,6 +179,7 @@ DryerStatus Dryer::getStatus() const
     status.chamberTemperature = dht.getTemperature();
     status.heatbedTemperature = thermistor.getTemperature();
     status.humidity = dht.getHumidity();
+    status.dhtConnected = dht.isConnected();
 
     status.targetTemperature = settings.targetTemperature;
 

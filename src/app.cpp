@@ -1,14 +1,1 @@
-#include "app.h"
-
-void App::begin()
-{
-    dryer.begin();
-
-    // Temporary
-    dryer.start();
-}
-
-void App::update()
-{
-    dryer.update();
-}
+// App class removed — Dryer is managed directly in main.cpp

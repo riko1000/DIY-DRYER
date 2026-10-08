@@ -14,6 +14,7 @@ public:
     bool isConnected() const;
 
 private:
+    void readSensor();
 
     float temperature = 0.0f;
 

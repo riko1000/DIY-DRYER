@@ -16,10 +16,20 @@ const stopButton = document.getElementById("stopButton");
 const timeSlider = document.getElementById("timeSlider");
 const timeValue = document.getElementById("timeValue");
 
+timeSlider.addEventListener("input", () =>
+{
+    timeValue.textContent = timeSlider.value;
+});
+
 timeSlider.addEventListener("change", async () =>
 {
     timeValue.textContent = timeSlider.value;
     await sendSettings();
+});
+
+targetSlider.addEventListener("input", () =>
+{
+    targetValue.textContent = targetSlider.value;
 });
 
 targetSlider.addEventListener("change", async () =>
@@ -101,14 +111,16 @@ async function updateStatus()
 
         const data = await response.json();
 
-        chamberTemp.textContent =
-            data.chamber.toFixed(1) + " °C";
+        if (data.dhtConnected) {
+            chamberTemp.textContent = data.chamber.toFixed(1) + " °C";
+            humidity.textContent = data.humidity.toFixed(0) + " %";
+        } else {
+            chamberTemp.textContent = "N/A";
+            humidity.textContent = "N/A";
+        }
 
         heatbedTemp.textContent =
             data.heatbed.toFixed(1) + " °C";
-
-        humidity.textContent =
-            data.humidity.toFixed(0) + " %";
 
         progressBar.value = data.progress;
 

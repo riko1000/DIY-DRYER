@@ -6,6 +6,7 @@
 
 void Thermistor::begin()
 {
+    readSensor();
 }
 
 void Thermistor::update()
@@ -13,6 +14,11 @@ void Thermistor::update()
     if (millis() - lastRead < 200)
         return;
 
+    readSensor();
+}
+
+void Thermistor::readSensor()
+{
     lastRead = millis();
 
     uint16_t adc = analogRead(THERMISTOR_PIN);

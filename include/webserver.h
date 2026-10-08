@@ -23,15 +23,14 @@ private:
 
     void sendHomePage(WiFiClient& client);
     void sendStatus(WiFiClient& client);
-
-    void sendStart(WiFiClient& client);
-    void sendStop(WiFiClient& client);
     void sendSettings(WiFiClient& client, const String& request);
-    void sendStyleCss(WiFiClient& client);
     void sendNotFound(WiFiClient& client);
-    void sendAppJs(WiFiClient& client);
     
     String readRequest(WiFiClient& client);
+
+    void sendStatusLine(
+        WiFiClient& client,
+        int statusCode);
 
     void sendJson(
         WiFiClient& client,

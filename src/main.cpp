@@ -15,9 +15,6 @@ void setup()
 
     dryer.begin();
 
-    // Temporary for testing.
-    dryer.start();
-
     webServer.begin();
 
     Serial.println();
