@@ -21,6 +21,9 @@ struct DryerSettings
 
     float maxHeatbedTemperature = 80.0f;
     float maxChamberTemperature = 60.0f;
+
+    float stepperRPM = 10.0f;
+    bool stepperAutoStart = true;
 };
 
 struct DryerRuntime
@@ -46,7 +49,7 @@ struct DryerStatus
 
     bool heaterOn = false;
     bool running = false;
-    bool dhtConnected = false;
+    bool stepperOn = false;
 
     DryerState state = DryerState::Idle;
 

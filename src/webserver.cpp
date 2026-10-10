@@ -87,6 +87,26 @@ void WebServer::handleClient(WiFiClient& client)
         return;
     }
 
+    if (request.startsWith("POST /api/stepper/on"))
+    {
+        dryer.startStepper();
+        sendText(client, "OK");
+        return;
+    }
+
+    if (request.startsWith("POST /api/stepper/off"))
+    {
+        dryer.stopStepper();
+        sendText(client, "OK");
+        return;
+    }
+
+    if (request.startsWith("POST /api/stepper/rpm"))
+    {
+        sendStepperRPM(client, request);
+        return;
+    }
+
     sendNotFound(client);
 }
 
@@ -448,6 +468,7 @@ void WebServer::sendStatus(WiFiClient& client)
 
     json["state"] = dryer.getStateString();
     json["heater"] = status.heaterOn;
+    json["stepper"] = status.stepperOn;
     json["running"] = status.running;
     json["target"] = status.targetTemperature;
     json["heatbed"] = status.heatbedTemperature;
@@ -506,6 +527,38 @@ void WebServer::sendSettings(WiFiClient& client, const String& request)
     }
 
     Serial.println("Settings received");
+    sendText(client, "OK");
+}
+
+void WebServer::sendStepperRPM(WiFiClient& client, const String& request)
+{
+    int bodyStart = request.indexOf("\r\n\r\n");
+
+    if (bodyStart == -1)
+    {
+        sendText(client, "Bad Request", 400);
+        return;
+    }
+
+    String body = request.substring(bodyStart + 4);
+
+    JsonDocument json;
+    DeserializationError error = deserializeJson(json, body);
+
+    if (error)
+    {
+        sendText(client, "Bad Request", 400);
+        return;
+    }
+
+    if (json["rpm"].is<float>())
+    {
+        float rpm = json["rpm"].as<float>();
+        dryer.setStepperRPM(rpm);
+        Serial.print("Stepper RPM set to: ");
+        Serial.println(rpm);
+    }
+
     sendText(client, "OK");
 }
 

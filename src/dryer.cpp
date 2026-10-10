@@ -5,6 +5,7 @@ void Dryer::begin()
     thermistor.begin();
     dht.begin();
     heater.begin();
+    stepper.begin();
 
     currentState = DryerState::Idle;
 }
@@ -20,12 +21,18 @@ void Dryer::start()
     runtime.progress = 0;
 
     currentState = DryerState::Drying;
+
+    if (settings.stepperAutoStart)
+    {
+        stepper.on();
+    }
 }
 
 void Dryer::stop()
 {
     runtime.running = false;
     heater.off();
+    stepper.off();
     currentState = DryerState::Idle;
 }
 
@@ -42,6 +49,33 @@ void Dryer::setTargetTemperature(float temperature)
 void Dryer::setDryTimeHours(uint32_t hours)
 {
     settings.dryingTimeSeconds = hours * 3600;
+}
+
+void Dryer::setStepperRPM(float rpm)
+{
+    settings.stepperRPM = rpm;
+    stepper.setRPM(rpm);
+}
+
+void Dryer::setStepperAutoStart(bool enabled)
+{
+    settings.stepperAutoStart = enabled;
+    stepper.update();
+}
+
+void Dryer::startStepper()
+{
+    stepper.on();
+}
+
+void Dryer::stopStepper()
+{
+    stepper.off();
+}
+
+bool Dryer::stepperIsOn() const
+{
+    return stepper.isOn();
 }
 
 float Dryer::getTargetTemperature() const
@@ -184,6 +218,7 @@ DryerStatus Dryer::getStatus() const
     status.targetTemperature = settings.targetTemperature;
 
     status.heaterOn = heater.isOn();
+    status.stepperOn = stepper.isOn();
     status.running = runtime.running;
 
     status.state = currentState;

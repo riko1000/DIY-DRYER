@@ -4,18 +4,26 @@
 #include "heater.h"
 #include "thermistor.h"
 #include "dhtsensor.h"
+#include "stepper.h"
 #include "dryer_types.h"
 
 class Dryer
 {
 public:
-        void start();
+    void start();
     void stop();
 
     bool isRunning() const;
 
     void setTargetTemperature(float temperature);
     void setDryTimeHours(uint32_t hours);
+    void setStepperRPM(float rpm);
+    void setStepperAutoStart(bool enabled);
+    
+    void startStepper();
+    void stopStepper();
+    bool stepperIsOn() const;
+    
     float getTargetTemperature() const;
 
     uint32_t getRemainingSeconds() const;
@@ -47,6 +55,7 @@ public:
     Thermistor thermistor;
     Heater heater;
     DHTSensor dht;
+    StepperMotor stepper;
 
     DryerSettings settings;
     DryerRuntime runtime;
