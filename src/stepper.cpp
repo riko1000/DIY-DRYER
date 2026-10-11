@@ -7,16 +7,14 @@ void StepperMotor::begin()
 {
     pinMode(STEPPER_STEP_PIN, OUTPUT);
     pinMode(STEPPER_DIR_PIN, OUTPUT);
-    pinMode(STEPPER_ENABLE_PIN, OUTPUT);
 
-    // Set initial state
+    // Set initial state. A4988 ENABLE is hard-wired to GND.
     digitalWrite(STEPPER_STEP_PIN, LOW);
-    digitalWrite(STEPPER_DIR_PIN, LOW);  // Direction doesn't matter for filament spinning
-    digitalWrite(STEPPER_ENABLE_PIN, HIGH); // Disable motor initially
+    digitalWrite(STEPPER_DIR_PIN, LOW);
 
     setRPM(DEFAULT_STEPPER_RPM);
 
-    Serial.println("[Stepper] Filament spinner initialized at " + String(DEFAULT_STEPPER_RPM) + " RPM");
+    Serial.println("[Stepper] NEMA 17 motor initialized at " + String(DEFAULT_STEPPER_RPM) + " RPM");
 }
 
 void StepperMotor::update()
@@ -34,7 +32,6 @@ void StepperMotor::update()
 
 void StepperMotor::step()
 {
-    // Simple pulse for NEMA 17 stepping
     digitalWrite(STEPPER_STEP_PIN, HIGH);
     delayMicroseconds(5);
     digitalWrite(STEPPER_STEP_PIN, LOW);
@@ -45,8 +42,7 @@ void StepperMotor::on()
     if (!motorOn)
     {
         motorOn = true;
-        digitalWrite(STEPPER_ENABLE_PIN, LOW); // Enable motor
-        Serial.println("[Stepper] Filament spinner ON at " + String((60000000.0f / stepIntervalUs) / STEPS_PER_REVOLUTION) + " RPM");
+        Serial.println("[Stepper] Filament spinner ON");
     }
 }
 
@@ -55,7 +51,6 @@ void StepperMotor::off()
     if (motorOn)
     {
         motorOn = false;
-        digitalWrite(STEPPER_ENABLE_PIN, HIGH); // Disable motor
         Serial.println("[Stepper] Filament spinner OFF");
     }
 }
@@ -70,7 +65,6 @@ void StepperMotor::setRPM(float rpm)
 
 void StepperMotor::setDirection(bool cw)
 {
-    // Direction control left in for flexibility, but not used for simple filament spinning
     clockwise = cw;
 }
 

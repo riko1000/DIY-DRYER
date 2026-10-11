@@ -16,7 +16,6 @@ constexpr uint8_t THERMISTOR_PIN = A0;
 // NEMA 17 Stepper Motor (A4988 Driver)
 constexpr uint8_t STEPPER_STEP_PIN = 8;
 constexpr uint8_t STEPPER_DIR_PIN = 9;
-constexpr uint8_t STEPPER_ENABLE_PIN = 10;
 
 /*
 |--------------------------------------------------------------------------
