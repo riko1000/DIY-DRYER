@@ -20,11 +20,10 @@ public:
 private:
     void step();
 
-    uint8_t stepPhase = 0;
     bool motorOn = false;
     bool clockwise = true;
     unsigned long lastStep = 0;
-    uint16_t stepIntervalUs = 2000; // ~100 RPM at 512 steps/revolution
+    uint32_t stepIntervalUs = 5000; // ~100 RPM at 200 steps/revolution
 };
 
 #endif
