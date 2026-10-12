@@ -48,7 +48,7 @@ constexpr float MAX_CHAMBER_TEMP = 60.0f;
 |--------------------------------------------------------------------------
 */
 
-constexpr float DEFAULT_STEPPER_RPM = 60.0f;
+constexpr float DEFAULT_STEPPER_RPM = 5.0f; // Slow, reliable speed for initial testing
 constexpr uint16_t STEPS_PER_REVOLUTION = 200; // NEMA 17 typical: 1.8° per step
 
 /*
