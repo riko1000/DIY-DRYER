@@ -5,7 +5,7 @@ void Dryer::begin()
     thermistor.begin();
     dht.begin();
     heater.begin();
-    stepper.begin();
+    motor.begin();
 
     currentState = DryerState::Idle;
 }
@@ -22,9 +22,9 @@ void Dryer::start()
 
     currentState = DryerState::Drying;
 
-    if (settings.stepperAutoStart)
+    if (settings.motorAutoStart)
     {
-        stepper.on();
+        motor.on();
     }
 }
 
@@ -32,7 +32,7 @@ void Dryer::stop()
 {
     runtime.running = false;
     heater.off();
-    stepper.off();
+    motor.off();
     currentState = DryerState::Idle;
 }
 
@@ -51,31 +51,30 @@ void Dryer::setDryTimeHours(uint32_t hours)
     settings.dryingTimeSeconds = hours * 3600;
 }
 
-void Dryer::setStepperRPM(float rpm)
+void Dryer::setMotorSpeedPercent(float percent)
 {
-    settings.stepperRPM = rpm;
-    stepper.setRPM(rpm);
+    settings.motorSpeedPercent = constrain(percent, 0.0f, 100.0f);
+    motor.setSpeedPercent(settings.motorSpeedPercent);
 }
 
-void Dryer::setStepperAutoStart(bool enabled)
+void Dryer::setMotorAutoStart(bool enabled)
 {
-    settings.stepperAutoStart = enabled;
-    stepper.update();
+    settings.motorAutoStart = enabled;
 }
 
-void Dryer::startStepper()
+void Dryer::startMotor()
 {
-    stepper.on();
+    motor.on();
 }
 
-void Dryer::stopStepper()
+void Dryer::stopMotor()
 {
-    stepper.off();
+    motor.off();
 }
 
-bool Dryer::stepperIsOn() const
+bool Dryer::motorIsOn() const
 {
-    return stepper.isOn();
+    return motor.isOn();
 }
 
 float Dryer::getTargetTemperature() const
@@ -87,6 +86,7 @@ void Dryer::update()
 {
     thermistor.update();
     dht.update();
+    motor.update();
 
     checkSafety();
     updateTimer();
@@ -130,6 +130,7 @@ void Dryer::updateTimer()
 
         runtime.running = false;
         heater.off();
+        motor.off();
 
         currentState = DryerState::Finished;
 
@@ -170,6 +171,7 @@ void Dryer::enterErrorState()
 {
     runtime.running = false;
     heater.off();
+    motor.off();
     currentState = DryerState::Error;
 }
 float Dryer::getHeatbedTemperature() const
@@ -218,7 +220,7 @@ DryerStatus Dryer::getStatus() const
     status.targetTemperature = settings.targetTemperature;
 
     status.heaterOn = heater.isOn();
-    status.stepperOn = stepper.isOn();
+    status.motorOn = motor.isOn();
     status.running = runtime.running;
 
     status.state = currentState;

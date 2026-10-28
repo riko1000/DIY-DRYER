@@ -11,11 +11,20 @@ namespace
 
 void DHTSensor::begin()
 {
-    dht.begin();
+    if (DHT_SENSOR_ENABLED)
+    {
+        dht.begin();
+    }
 }
 
 void DHTSensor::update()
 {
+    if (!DHT_SENSOR_ENABLED)
+    {
+        sensorConnected = false;
+        return;
+    }
+
     if (millis() - lastRead < 2000)
         return;
 

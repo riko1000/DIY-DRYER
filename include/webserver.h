@@ -24,7 +24,7 @@ private:
     void sendHomePage(WiFiClient& client);
     void sendStatus(WiFiClient& client);
     void sendSettings(WiFiClient& client, const String& request);
-    void sendStepperRPM(WiFiClient& client, const String& request);
+    void sendMotorSpeed(WiFiClient& client, const String& request);
     void sendNotFound(WiFiClient& client);
     
     String readRequest(WiFiClient& client);

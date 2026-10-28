@@ -87,23 +87,23 @@ void WebServer::handleClient(WiFiClient& client)
         return;
     }
 
-    if (request.startsWith("POST /api/stepper/on"))
+    if (request.startsWith("POST /api/motor/on"))
     {
-        dryer.startStepper();
+        dryer.startMotor();
         sendText(client, "OK");
         return;
     }
 
-    if (request.startsWith("POST /api/stepper/off"))
+    if (request.startsWith("POST /api/motor/off"))
     {
-        dryer.stopStepper();
+        dryer.stopMotor();
         sendText(client, "OK");
         return;
     }
 
-    if (request.startsWith("POST /api/stepper/rpm"))
+    if (request.startsWith("POST /api/motor/speed"))
     {
-        sendStepperRPM(client, request);
+        sendMotorSpeed(client, request);
         return;
     }
 
@@ -468,7 +468,7 @@ void WebServer::sendStatus(WiFiClient& client)
 
     json["state"] = dryer.getStateString();
     json["heater"] = status.heaterOn;
-    json["stepper"] = status.stepperOn;
+    json["motor"] = status.motorOn;
     json["running"] = status.running;
     json["target"] = status.targetTemperature;
     json["heatbed"] = status.heatbedTemperature;
@@ -530,7 +530,7 @@ void WebServer::sendSettings(WiFiClient& client, const String& request)
     sendText(client, "OK");
 }
 
-void WebServer::sendStepperRPM(WiFiClient& client, const String& request)
+void WebServer::sendMotorSpeed(WiFiClient& client, const String& request)
 {
     int bodyStart = request.indexOf("\r\n\r\n");
 
@@ -551,12 +551,13 @@ void WebServer::sendStepperRPM(WiFiClient& client, const String& request)
         return;
     }
 
-    if (json["rpm"].is<float>())
+    if (json["percent"].is<float>())
     {
-        float rpm = json["rpm"].as<float>();
-        dryer.setStepperRPM(rpm);
-        Serial.print("Stepper RPM set to: ");
-        Serial.println(rpm);
+        float percent = json["percent"].as<float>();
+        dryer.setMotorSpeedPercent(percent);
+        Serial.print("Motor speed set to: ");
+        Serial.print(percent);
+        Serial.println("%");
     }
 
     sendText(client, "OK");

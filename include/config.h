@@ -12,10 +12,12 @@
 constexpr uint8_t RELAY_PIN = 7;
 constexpr uint8_t DHT_PIN = 2;
 constexpr uint8_t THERMISTOR_PIN = A0;
+constexpr bool DHT_SENSOR_ENABLED = false;
 
-// NEMA 17 Stepper Motor (A4988 Driver)
-constexpr uint8_t STEPPER_STEP_PIN = 8;
-constexpr uint8_t STEPPER_DIR_PIN = 9;
+// AndyMark am-2235a brushed DC motor with VEX Victor SP
+constexpr uint8_t VICTOR_SIGNAL_PIN = 8;
+constexpr uint16_t VICTOR_NEUTRAL_US = 1500;
+constexpr uint16_t VICTOR_FORWARD_MAX_US = 2000;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,12 +46,12 @@ constexpr float MAX_CHAMBER_TEMP = 60.0f;
 
 /*
 |--------------------------------------------------------------------------
-| Stepper Motor (NEMA 17 + A4988 Driver)
+| AndyMark Snow Blower DC Motor + Victor SP
 |--------------------------------------------------------------------------
 */
 
-constexpr float DEFAULT_STEPPER_RPM = 5.0f; // Slow, reliable speed for initial testing
-constexpr uint16_t STEPS_PER_REVOLUTION = 200; // NEMA 17 typical: 1.8° per step
+constexpr float DEFAULT_MOTOR_SPEED_PERCENT = 20.0f;
+constexpr uint16_t MOTOR_RAMP_DURATION_MS = 1500;
 
 /*
 |--------------------------------------------------------------------------
