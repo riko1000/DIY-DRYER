@@ -53,13 +53,4 @@ constexpr float MAX_CHAMBER_TEMP = 60.0f;
 constexpr float DEFAULT_MOTOR_SPEED_PERCENT = 30.0f;
 constexpr uint16_t MOTOR_RAMP_DURATION_MS = 1500;
 
-/*
-|--------------------------------------------------------------------------
-| WiFi Access Point
-|--------------------------------------------------------------------------
-*/
-
-constexpr char AP_SSID[] = "Dryer-4338";
-constexpr char AP_PASSWORD[] = "43384338";
-
 #endif

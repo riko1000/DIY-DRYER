@@ -2,10 +2,10 @@
 
 #include "config.h"
 #include "dryer.h"
-#include "webserver.h"
+#include "cloud_api.h"
 
 Dryer dryer;
-WebServer webServer(dryer);
+CloudApi cloudApi(dryer);
 
 void setup()
 {
@@ -15,7 +15,7 @@ void setup()
 
     dryer.begin();
 
-    webServer.begin();
+    cloudApi.begin();
 
     Serial.println();
     Serial.println("DIY Dryer Booting");
@@ -25,5 +25,5 @@ void loop()
 {
     dryer.update();
 
-    webServer.update();
+    cloudApi.update();
 }

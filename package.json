@@ -1,0 +1,13 @@
+{
+  "name": "diy-dryer-dashboard",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "devDependencies": {
+    "vercel": "^66.6.0"
+  }
+}
