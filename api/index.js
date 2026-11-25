@@ -4,6 +4,7 @@ const SESSION_COOKIE = "dryer_session";
 const SESSION_LIFETIME_SECONDS = 12 * 60 * 60;
 const DEVICE_ONLINE_WINDOW_MS = 25000;
 const COMMAND_LIFETIME_MS = 15000;
+const MAX_CHAMBER_TARGET_TEMP = 48;
 const DEVICE_STATES = new Set(["Booting", "Idle", "Drying", "Finished", "Error"]);
 
 function sendJson(res, status, value) {
@@ -349,7 +350,7 @@ async function handleCommand(req, res) {
         const hours = Number(body.hours);
 
         if (!Number.isFinite(temperature) ||
-            temperature < 30 || temperature > 80 ||
+            temperature < 30 || temperature > MAX_CHAMBER_TARGET_TEMP ||
             !Number.isInteger(hours) || hours < 1 || hours > 24) {
             return sendJson(res, 400, { error: "Invalid drying settings" });
         }

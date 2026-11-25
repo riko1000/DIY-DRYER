@@ -3,9 +3,11 @@
 #include "config.h"
 #include "dryer.h"
 #include "cloud_api.h"
+#include "ambient_lights.h"
 
 Dryer dryer;
 CloudApi cloudApi(dryer);
+AmbientLights ambientLights;
 
 void setup()
 {
@@ -14,6 +16,8 @@ void setup()
     analogReadResolution(14);
 
     dryer.begin();
+    ambientLights.begin();
+    ambientLights.update(dryer.state());
 
     cloudApi.begin();
 
@@ -24,6 +28,7 @@ void setup()
 void loop()
 {
     dryer.update();
+    ambientLights.update(dryer.state());
 
     cloudApi.update();
 }

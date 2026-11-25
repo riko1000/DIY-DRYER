@@ -75,8 +75,9 @@
 
             <section class="temperature">
                 <h2>Drying settings</h2>
-                <label for="targetTemp">Target temperature</label>
-                <input id="targetTemp" type="range" min="30" max="80" value="45">
+                <label for="targetTemp">Chamber target temperature</label>
+                <input id="targetTemp" type="range" min="30" max="48" value="45">
+                <p>DHT11 limit: 48 °C. Higher targets need a higher-range chamber sensor.</p>
                 <p><span id="targetValue">45</span> °C</p>
 
                 <label for="timeSlider">Dry time</label>

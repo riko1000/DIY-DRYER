@@ -10,12 +10,12 @@
 class Dryer
 {
 public:
-    void start();
+    bool start();
     void stop();
 
     bool isRunning() const;
 
-    void setTargetTemperature(float temperature);
+    bool setTargetTemperature(float temperature);
     void setDryTimeHours(uint32_t hours);
     void setMotorSpeedPercent(float percent);
     void setMotorAutoStart(bool enabled);

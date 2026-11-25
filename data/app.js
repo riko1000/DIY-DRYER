@@ -21,6 +21,7 @@ const canvas = document.getElementById("graph");
 const context = canvas.getContext("2d");
 
 const maxPoints = 60;
+const maxChamberTarget = 48;
 const heatbedHistory = [];
 const chamberHistory = [];
 let currentTarget = 45;
@@ -62,7 +63,12 @@ function setControlsEnabled(enabled) {
     startButton.disabled = !enabled;
     stopButton.disabled = !enabled;
     document.querySelectorAll(".materials button").forEach(button => {
-        button.disabled = !enabled;
+        const preset = presets[button.textContent.trim()];
+        const supported = preset && preset.temp <= maxChamberTarget;
+        button.disabled = !enabled || !supported;
+        button.title = supported
+            ? ""
+            : `Requires a chamber sensor rated for ${preset ? preset.temp : "this"} °C.`;
     });
     targetSlider.disabled = !enabled;
     timeSlider.disabled = !enabled;
@@ -315,6 +321,10 @@ document.querySelectorAll(".materials button").forEach(button => {
     button.addEventListener("click", () => {
         const preset = presets[button.textContent.trim()];
         if (!preset) return;
+        if (preset.temp > maxChamberTarget) {
+            showFeedback("This preset exceeds the DHT11's 50 °C range. Upgrade the chamber sensor to use it.", true);
+            return;
+        }
         targetSlider.value = preset.temp;
         targetValue.textContent = preset.temp;
         timeSlider.value = preset.hours;

@@ -95,5 +95,17 @@ secrets in the dashboard's static files.
   expires after 15 seconds and is not kept for later if the device is offline.
 - The temperature controller, timer, and safety shutdowns stay on the Uno.
   Vercel or Supabase being unavailable does not take over local heater control.
+- The DHT11 chamber sensor controls the heater, and its target is capped at
+  48°C, within its 50°C rated range and with the controller's 2°C hysteresis.
+  A separate thermistor shuts the dryer down at 80°C on the heatbed. Higher
+  chamber targets and the corresponding material presets require a
+  higher-range chamber sensor and matching firmware.
+- A 100-pixel WS2815 strip connects to data pin D4. It displays dim RGB-mixed
+  white while idle, a slow rainbow while drying, and red if the controller
+  enters its error state. Brightness is deliberately limited.
+- Power the WS2815 strip from a separate, regulated 12V supply sized for the
+  exact strip. Do not power it from the Uno or connect 12V to an Arduino pin.
+  Connect the strip supply ground to Arduino ground so the data signal has a
+  common reference, and follow the strip manufacturer's wiring requirements.
 - The dashboard is private behind its password, and its URL is not intended to
   be discoverable through Google Search.

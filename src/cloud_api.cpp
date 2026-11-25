@@ -160,8 +160,7 @@ void CloudApi::applyCommand(JsonObject command)
 
     if (std::strcmp(action, "start") == 0)
     {
-        dryer.start();
-        accepted = true;
+        accepted = dryer.start();
     }
     else if (std::strcmp(action, "stop") == 0)
     {
@@ -175,12 +174,13 @@ void CloudApi::applyCommand(JsonObject command)
         const float temperature = command["temperature"].as<float>();
         const uint32_t hours = command["hours"].as<uint32_t>();
 
-        if (temperature >= 30.0f && temperature <= 80.0f &&
+        if (temperature >= 30.0f &&
+            temperature <= MAX_CHAMBER_TARGET_TEMP &&
             hours >= 1 && hours <= 24)
         {
-            dryer.setTargetTemperature(temperature);
-            dryer.setDryTimeHours(hours);
-            accepted = true;
+            accepted = dryer.setTargetTemperature(temperature);
+            if (accepted)
+                dryer.setDryTimeHours(hours);
         }
     }
 
