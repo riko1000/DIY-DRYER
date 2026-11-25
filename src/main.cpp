@@ -2,10 +2,12 @@
 
 #include "config.h"
 #include "dryer.h"
-#include "webserver.h"
+#include "cloud_api.h"
+#include "ambient_lights.h"
 
 Dryer dryer;
-WebServer webServer(dryer);
+CloudApi cloudApi(dryer);
+AmbientLights ambientLights;
 
 void setup()
 {
@@ -14,8 +16,10 @@ void setup()
     analogReadResolution(14);
 
     dryer.begin();
+    ambientLights.begin();
+    ambientLights.update(dryer.state());
 
-    webServer.begin();
+    cloudApi.begin();
 
     Serial.println();
     Serial.println("DIY Dryer Booting");
@@ -24,6 +28,7 @@ void setup()
 void loop()
 {
     dryer.update();
+    ambientLights.update(dryer.state());
 
-    webServer.update();
+    cloudApi.update();
 }

@@ -1,146 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DIY Dryer</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DIY Dryer Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
+    <div class="container">
+        <section id="loginView" class="login-card">
+            <h1>DIY Dryer</h1>
+            <p>Sign in to view and control your dryer.</p>
+            <form id="loginForm">
+                <label for="password">Dashboard password</label>
+                <input id="password" type="password" autocomplete="current-password" required>
+                <button type="submit">Sign in</button>
+                <p id="loginError" class="feedback error" role="alert" hidden></p>
+            </form>
+        </section>
 
-<div class="container">
+        <main id="dashboardView" hidden>
+            <header>
+                <div>
+                    <h1>DIY Dryer</h1>
+                    <p id="connectionMessage" class="connection-message">Connecting...</p>
+                </div>
+                <div class="header-actions">
+                    <div id="statusBadge" class="status idle">● OFFLINE</div>
+                    <button id="logoutButton" class="secondary-button" type="button">Sign out</button>
+                </div>
+            </header>
 
-    <header>
+            <p id="feedback" class="feedback" role="status" hidden></p>
 
-        <h1>DIY Dryer</h1>
+            <section class="cards">
+                <div class="card">
+                    <h2>Chamber</h2>
+                    <p id="chamberTemp">--.- °C</p>
+                </div>
+                <div class="card">
+                    <h2>Heatbed</h2>
+                    <p id="heatbedTemp">--.- °C</p>
+                </div>
+                <div class="card">
+                    <h2>Humidity</h2>
+                    <p id="humidity">-- %</p>
+                </div>
+            </section>
 
-        <div id="statusBadge" class="status idle">
-            ● IDLE
-        </div>
+            <section class="progressSection">
+                <h2>Drying progress</h2>
+                <progress id="progressBar" value="0" max="100"></progress>
+                <p id="remainingTime">--:--:-- remaining</p>
+            </section>
 
-    </header>
+            <section class="controls">
+                <button id="startButton" type="button" disabled>Start</button>
+                <button id="stopButton" type="button" disabled>Stop</button>
+            </section>
 
-    <section class="cards">
+            <section class="materials">
+                <h2>Material presets</h2>
+                <div class="presetGrid">
+                    <button type="button">PLA</button>
+                    <button type="button">PETG</button>
+                    <button type="button">ABS</button>
+                    <button type="button">ASA</button>
+                    <button type="button">TPU</button>
+                    <button type="button">PA</button>
+                    <button type="button">PC</button>
+                </div>
+            </section>
 
-        <div class="card">
+            <section class="temperature">
+                <h2>Drying settings</h2>
+                <label for="targetTemp">Chamber target temperature</label>
+                <input id="targetTemp" type="range" min="30" max="48" value="45">
+                <p>DHT11 limit: 48 °C. Higher targets need a higher-range chamber sensor.</p>
+                <p><span id="targetValue">45</span> °C</p>
 
-            <h2>🌡 Chamber</h2>
+                <label for="timeSlider">Dry time</label>
+                <input id="timeSlider" type="range" min="1" max="24" value="6">
+                <p><span id="timeValue">6</span> hours</p>
+            </section>
 
-            <p id="chamberTemp">--.- °C</p>
+            <section class="graph">
+                <h2>Temperature history</h2>
+                <canvas id="graph" width="600" height="250" aria-label="Temperature history chart"></canvas>
+                <div class="legend">
+                    <span><i class="legend-dot heatbed-dot"></i>Heatbed</span>
+                    <span><i class="legend-dot chamber-dot"></i>Chamber</span>
+                    <span><i class="legend-dot target-dot"></i>Target</span>
+                </div>
+            </section>
+        </main>
+    </div>
 
-        </div>
-
-        <div class="card">
-
-            <h2>🔥 Heatbed</h2>
-
-            <p id="heatbedTemp">--.- °C</p>
-
-        </div>
-
-        <div class="card">
-
-            <h2>💧 Humidity</h2>
-
-            <p id="humidity">-- %</p>
-
-        </div>
-
-    </section>
-
-    <section class="progressSection">
-
-        <h2>Progress</h2>
-
-        <progress id="progressBar" value="0" max="100"></progress>
-
-        <p id="remainingTime">
-            --:--:--
-        </p>
-
-    </section>
-
-    <section class="controls">
-
-        <button id="startButton">
-            ▶ Start
-        </button>
-
-        <button id="stopButton">
-            ■ Stop
-        </button>
-
-    </section>
-
-    <section class="materials">
-
-        <h2>Material Presets</h2>
-
-        <div class="presetGrid">
-
-            <button>PLA</button>
-            <button>PETG</button>
-            <button>ABS</button>
-            <button>ASA</button>
-            <button>TPU</button>
-            <button>PA</button>
-            <button>PC</button>
-
-        </div>
-
-    </section>
-
-       
-    <section class="settings">
-
-    <h2>⚙ Drying Settings</h2>
-
-    <h3>Temperature</h3>
-
-    <input
-        id="targetTemp"
-        type="range"
-        min="30"
-        max="80"
-        value="45">
-
-    <p><span id="targetValue">45</span> °C</p>
-
-    <h3>Dry Time</h3>
-
-    <input
-        id="timeSlider"
-        type="range"
-        min="1"
-        max="24"
-        value="6">
-
-    <p><span id="timeValue">6</span> Hours</p>
-
-</section>
-
-    <section class="graph">
-
-        <h2>Temperature Graph</h2>
-
-        <canvas
-            id="graph"
-            width="600"
-            height="250">
-        </canvas>
-
-    </section>
-
-</div>
-
-<script src="app.js"></script>
-
+    <script src="/app.js" defer></script>
 </body>
-
 </html>

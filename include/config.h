@@ -12,7 +12,11 @@
 constexpr uint8_t RELAY_PIN = 7;
 constexpr uint8_t DHT_PIN = 2;
 constexpr uint8_t THERMISTOR_PIN = A0;
-constexpr bool DHT_SENSOR_ENABLED = false;
+constexpr bool DHT_SENSOR_ENABLED = true;
+constexpr uint8_t WS2815_DATA_PIN = 4;
+constexpr uint16_t WS2815_PIXEL_COUNT = 100;
+constexpr uint8_t WS2815_IDLE_BRIGHTNESS = 18;
+constexpr uint8_t WS2815_DRYING_BRIGHTNESS = 48;
 
 // AndyMark am-2235a brushed DC motor with VEX Victor SP
 constexpr uint8_t VICTOR_SIGNAL_PIN = 8;
@@ -41,6 +45,8 @@ constexpr uint32_t DEFAULT_DRY_TIME = 6 * 60 * 60;
 
 constexpr float HYSTERESIS = 2.0f;
 
+constexpr float DHT11_MAX_TEMP = 50.0f;
+constexpr float MAX_CHAMBER_TARGET_TEMP = DHT11_MAX_TEMP - HYSTERESIS;
 constexpr float MAX_HEATBED_TEMP = 80.0f;
 constexpr float MAX_CHAMBER_TEMP = 60.0f;
 
@@ -52,14 +58,5 @@ constexpr float MAX_CHAMBER_TEMP = 60.0f;
 
 constexpr float DEFAULT_MOTOR_SPEED_PERCENT = 30.0f;
 constexpr uint16_t MOTOR_RAMP_DURATION_MS = 1500;
-
-/*
-|--------------------------------------------------------------------------
-| WiFi Access Point
-|--------------------------------------------------------------------------
-*/
-
-constexpr char AP_SSID[] = "Dryer-4338";
-constexpr char AP_PASSWORD[] = "43384338";
 
 #endif

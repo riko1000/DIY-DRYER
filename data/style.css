@@ -235,3 +235,131 @@ canvas {
     }
 
 }
+
+[hidden] {
+    display: none !important;
+}
+
+.login-card {
+    width: min(420px, 100%);
+    margin: 12vh auto;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--card);
+}
+
+.login-card h1 {
+    margin-bottom: 10px;
+}
+
+.login-card p {
+    color: var(--secondary);
+    margin-bottom: 20px;
+}
+
+.login-card form {
+    display: grid;
+    gap: 12px;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #121212;
+    color: var(--text);
+}
+
+.login-card button,
+.secondary-button {
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 16px;
+    color: white;
+    background: var(--blue);
+    cursor: pointer;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.secondary-button {
+    background: #333;
+}
+
+.connection-message {
+    color: var(--secondary);
+    margin-top: 6px;
+}
+
+.status.drying,
+.status.running {
+    background: var(--green);
+}
+
+.status.finished {
+    background: var(--blue);
+}
+
+.status.booting {
+    background: var(--orange);
+}
+
+.feedback {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+}
+
+.feedback.error {
+    border-color: var(--red);
+    color: #fecaca;
+}
+
+.controls button:disabled,
+.presetGrid button:disabled,
+input:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.temperature label {
+    display: block;
+    margin-top: 18px;
+    color: var(--secondary);
+}
+
+.legend {
+    display: flex;
+    gap: 18px;
+    margin-top: 12px;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
+    border-radius: 50%;
+}
+
+.heatbed-dot {
+    background: #ef4444;
+}
+
+.chamber-dot {
+    background: #3b82f6;
+}
+
+.target-dot {
+    background: #f59e0b;
+}

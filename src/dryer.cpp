@@ -1,7 +1,15 @@
 #include "dryer.h"
 
+#include "config.h"
+
 void Dryer::begin()
 {
+    settings.targetTemperature = DEFAULT_TARGET_TEMP;
+    settings.hysteresis = HYSTERESIS;
+    settings.dryingTimeSeconds = DEFAULT_DRY_TIME;
+    settings.maxHeatbedTemperature = MAX_HEATBED_TEMP;
+    settings.maxChamberTemperature = MAX_CHAMBER_TEMP;
+
     thermistor.begin();
     dht.begin();
     heater.begin();
@@ -10,8 +18,16 @@ void Dryer::begin()
     currentState = DryerState::Idle;
 }
 
-void Dryer::start()
+bool Dryer::start()
 {
+    if (!thermistor.isConnected() ||
+        !dht.isConnected() ||
+        thermistor.getTemperature() >= settings.maxHeatbedTemperature ||
+        dht.getTemperature() >= settings.maxChamberTemperature)
+    {
+        return false;
+    }
+
     runtime.running = true;
 
     runtime.startTime = millis();
@@ -26,6 +42,8 @@ void Dryer::start()
     {
         motor.on();
     }
+
+    return true;
 }
 
 void Dryer::stop()
@@ -41,9 +59,15 @@ bool Dryer::isRunning() const
     return runtime.running;
 }
 
-void Dryer::setTargetTemperature(float temperature)
+bool Dryer::setTargetTemperature(float temperature)
 {
+    if (temperature < 30.0f || temperature > MAX_CHAMBER_TARGET_TEMP)
+    {
+        return false;
+    }
+
     settings.targetTemperature = temperature;
+    return true;
 }
 
 void Dryer::setDryTimeHours(uint32_t hours)
@@ -95,15 +119,13 @@ void Dryer::update()
 
 void Dryer::controlHeater()
 {
-    if (!runtime.running)
+    if (!runtime.running || !dht.isConnected())
     {
         heater.off();
         return;
     }
 
-    // Prioritize Chamber (DHT) for regulation if available, 
-    // fallback to Heatbed (Thermistor) if DHT is disconnected.
-    float currentTemp = dht.isConnected() ? dht.getTemperature() : thermistor.getTemperature();
+    const float currentTemp = dht.getTemperature();
 
     if (currentTemp <= settings.targetTemperature - settings.hysteresis)
     {
@@ -155,6 +177,12 @@ void Dryer::checkSafety()
     }
 
     if (thermistor.getTemperature() >= settings.maxHeatbedTemperature)
+    {
+        enterErrorState();
+        return;
+    }
+
+    if (runtime.running && !dht.isConnected())
     {
         enterErrorState();
         return;
